@@ -1,0 +1,4 @@
+com/phasmo/journal/controller/GhostController.class
+com/phasmo/journal/model/Ghost.class
+com/phasmo/journal/repository/GhostRepository.class
+com/phasmo/journal/JournalApplication.class

@@ -1,0 +1,4 @@
+/workspaces/Phasmo_journal/backend/src/main/java/com/phasmo/journal/JournalApplication.java
+/workspaces/Phasmo_journal/backend/src/main/java/com/phasmo/journal/controller/GhostController.java
+/workspaces/Phasmo_journal/backend/src/main/java/com/phasmo/journal/model/Ghost.java
+/workspaces/Phasmo_journal/backend/src/main/java/com/phasmo/journal/repository/GhostRepository.java
