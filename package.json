@@ -1,1 +1,8 @@
-
+{
+  "name": "phasmo-journal-root",
+  "version": "1.0.0",
+  "description": "Root folder for Phasmophobia Journal project",
+  "scripts": {
+    "start:all": "bash start_phasmo.sh"
+  }
+}
