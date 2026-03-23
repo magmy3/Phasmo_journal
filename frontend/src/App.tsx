@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 
-// Aktualizovaný model ducha podle nové databáze
 interface Ghost {
   id: number;
   name: string;
@@ -40,10 +39,9 @@ function App() {
       {loading ? (
         <p style={{ textAlign: 'center' }}>Navazuji spojení s temnotou...</p>
       ) : (
-        /* Zde začíná GRID (mřížka), která karty vyskládá vedle sebe */
+        {/* OPRAVENÝ KOMENTÁŘ: Zde začíná GRID (mřížka) */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
           
-          {/* Projdeme všechny duchy a pro každého vytvoříme kartu */}
           {ghosts.map(ghost => (
             <div key={ghost.id} style={{ 
               backgroundColor: '#1a1a1a', 
@@ -57,14 +55,12 @@ function App() {
                 {ghost.name}
               </h2>
               
-              {/* Sekce pro důkazy (zobrazí se jako malé štítky) */}
               <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
                 {ghost.evidence1 && <span style={{ backgroundColor: '#374151', padding: '4px 10px', borderRadius: '6px', fontSize: '0.85rem' }}>{ghost.evidence1}</span>}
                 {ghost.evidence2 && <span style={{ backgroundColor: '#374151', padding: '4px 10px', borderRadius: '6px', fontSize: '0.85rem' }}>{ghost.evidence2}</span>}
                 {ghost.evidence3 && <span style={{ backgroundColor: '#374151', padding: '4px 10px', borderRadius: '6px', fontSize: '0.85rem' }}>{ghost.evidence3}</span>}
               </div>
 
-              {/* Vlastnosti - vykreslí se jen tehdy, pokud v databázi není null */}
               {ghost.strength && (
                 <p style={{ fontSize: '0.9rem', lineHeight: '1.4' }}>
                   <strong style={{ color: '#ef4444' }}>Síla:</strong> {ghost.strength}
