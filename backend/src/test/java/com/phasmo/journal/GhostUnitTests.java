@@ -33,7 +33,6 @@ public class GhostUnitTests {
         assertEquals("1.7 m/s", ghost.getSpecific().getSpeed(), "Rychlost ducha se musí shodovat");
         assertEquals(ghost, specific.getGhost(), "Specifická data musí odkazovat na správného ducha");
     }
-
     // Test 3: Kontrola logiky ukládání důkazů
     @Test
     public void testEvidenceAssignment() {
