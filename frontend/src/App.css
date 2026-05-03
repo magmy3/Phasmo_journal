@@ -1,42 +1,94 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Special+Elite&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.85)), url('https://images.unsplash.com/photo-1550684376-efcbd6e3f031?q=80&w=1920&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh; font-family: sans-serif; padding: 20px;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.journal-wrapper { position: relative; margin-top: 70px; }
+.journal {
+    display: flex; width: 1200px; height: 800px;
+    background-color: #e6dac3; border-radius: 12px;
+    box-shadow: inset 0 0 80px rgba(139, 69, 19, 0.15), 0 40px 80px rgba(0,0,0,0.9);
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0,0,0,0.04) 40px);
+    position: relative;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.view-container { display: flex; width: 100%; height: 100%; position: relative; }
+
+.page { flex: 1; padding: 50px 70px; position: relative; color: #1a1a1a; overflow-y: auto; }
+.page::-webkit-scrollbar { display: none; } 
+.left-page { border-radius: 12px 0 0 12px; }
+.right-page { border-radius: 0 12px 12px 0; }
+
+.binding {
+    width: 50px;
+    background: linear-gradient(to right, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.05) 100%);
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.5); z-index: 10; height: 100%;
+    flex-shrink: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.typed-text { font-family: 'Special Elite', monospace; font-size: 32px; text-transform: uppercase; margin-bottom: 20px; color: #222; }
+.handwritten { font-family: 'Caveat', cursive; font-size: 32px; color: #1c2b42; line-height: 1.3; margin-bottom: 15px; }
+hr { border: 0; border-bottom: 3px solid #666; margin-bottom: 25px; }
+.generic-list { font-family: 'Special Elite', monospace; font-size: 20px; margin-bottom: 20px; line-height: 1.6; }
+
+.ghost-grid { display: grid; grid-template-columns: 1fr 1fr; row-gap: 4px; column-gap: 20px; }
+.ghost-link {
+    font-family: 'Caveat', cursive; font-size: 30px; color: #1c2b42;
+    cursor: pointer; display: block; transition: color 0.2s, transform 0.2s; width: fit-content;
+}
+.ghost-link:hover { color: #8b0000; transform: scale(1.05) rotate(-1deg); }
+
+.back-link {
+    font-family: 'Caveat', cursive; font-size: 24px; color: #8b0000;
+    cursor: pointer; display: inline-block; margin-bottom: 20px; transition: 0.2s;
+}
+.back-link:hover { text-decoration: underline; transform: translateX(-5px); }
+
+.toggle-link {
+    font-family: 'Special Elite', monospace; font-size: 18px; color: #fff; background: #5a4b3a;
+    padding: 8px 16px; border-radius: 6px; cursor: pointer; float: right; transition: 0.2s;
+}
+.toggle-link:hover { background: #3a2b1a; }
+
+.image-placeholder {
+    width: 100%; height: 260px; background-color: #222; border: 4px dashed #555;
+    display: flex; justify-content: center; align-items: center; color: #888;
+    font-family: 'Special Elite', monospace; font-size: 20px; margin: 15px 0 25px 0;
 }
 
-.card {
-  padding: 2em;
+.polaroid {
+    background: #fcfcfc; padding: 15px 15px 45px 15px; width: 300px;
+    box-shadow: 3px 6px 20px rgba(0,0,0,0.3); transform: rotate(-3deg); margin: 40px auto 0 auto;
+    transition: transform 0.2s ease;
+}
+.polaroid:hover { transform: rotate(0deg) scale(1.05); }
+.photo-placeholder {
+    background: #111; height: 220px; color: #666; display: flex; justify-content: center;
+    align-items: center; text-align: center; font-size: 16px; font-family: 'Special Elite', monospace; margin-bottom: 15px;
+}
+.polaroid .handwritten { font-size: 28px; text-align: center; color: #111; margin: 0; }
+
+.sticky-note {
+    background-color: #f4d03f; width: 240px; padding: 25px; box-shadow: 4px 6px 15px rgba(0,0,0,0.2);
+    transform: rotate(6deg); position: absolute; bottom: 50px; right: 50px;
 }
 
-.read-the-docs {
-  color: #888;
+.tabs { position: absolute; top: -50px; left: 60px; display: flex; flex-direction: row; gap: 15px; }
+.tab {
+    background-color: #7b6a55; color: #e6dac3; padding: 14px 24px;
+    font-family: 'Special Elite', monospace; font-size: 18px; border-radius: 10px 10px 0 0;
+    box-shadow: 4px -3px 8px rgba(0,0,0,0.4); cursor: pointer; transition: transform 0.2s, background-color 0.2s; text-transform: uppercase;
 }
+.tab:hover { transform: translateY(-6px); background-color: #8c7b65; }
+.tab.active { background-color: #5a4b3a; transform: translateY(-6px); }
+
+/* Nové styly pro zvýrazněná data z tabulky */
+.data-label { font-family: 'Special Elite', monospace; font-size: 18px; color: #555; text-transform: uppercase; margin-top: 15px;}
+.data-value { font-family: 'Caveat', cursive; font-size: 28px; color: #8b0000; line-height: 1.1; margin-bottom: 10px;}
