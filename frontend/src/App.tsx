@@ -235,41 +235,44 @@ function App() {
           </div>
         )}
 
-        {/* --- POHLED 4: CHEAT SHEET (NOVÉ) --- */}
+        {/* --- POHLED 4: CHEAT SHEET (Tématický) --- */}
         {view === 'cheat-sheet' && (
           <div className="view-container">
-            {/* LEVÁ STRANA: FILTR EVIDENCÍ A DUCHŮ */}
+            
+            {/* LEVÁ STRANA: FILTR EVIDENCÍ */}
             <div className="page left-page">
               <h1 className="typed-text">Evidence Tracker</h1>
               <hr />
               
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '30px' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '15px', marginBottom: '40px' }}>
                 {ALL_EVIDENCES.map(ev => {
-                  let bgColor = '#e5e7eb'; // Neutral
-                  let color = '#374151';
-                  let textDecoration = 'none';
+                  let isFound = foundEvidences.includes(ev);
+                  let isRuledOut = ruledOutEvidences.includes(ev);
                   
-                  if (foundEvidences.includes(ev)) {
-                    bgColor = '#10b981'; // Green
-                    color = '#fff';
-                  } else if (ruledOutEvidences.includes(ev)) {
-                    bgColor = '#ef4444'; // Red
-                    color = '#fff';
-                    textDecoration = 'line-through';
+                  let buttonStyle: React.CSSProperties = {
+                    padding: '5px',
+                    border: 'none',
+                    backgroundColor: 'transparent',
+                    fontFamily: "'Caveat', cursive",
+                    fontSize: '32px',
+                    cursor: 'pointer',
+                    color: '#1c2b42',
+                    transition: '0.2s',
+                    lineHeight: '1',
+                  };
+
+                  if (isFound) {
+                    buttonStyle.color = '#10b981';
+                    buttonStyle.borderBottom = '4px solid #10b981';
+                    buttonStyle.fontWeight = 'bold';
+                  } else if (isRuledOut) {
+                    buttonStyle.color = '#8b0000';
+                    buttonStyle.textDecoration = 'line-through';
+                    buttonStyle.opacity = 0.8;
                   }
 
                   return (
-                    <button 
-                      key={ev} 
-                      onClick={() => toggleEvidence(ev)}
-                      style={{ 
-                        padding: '8px 16px', borderRadius: '8px', border: 'none', 
-                        fontFamily: "'Special Elite', monospace", fontSize: '16px',
-                        cursor: 'pointer', backgroundColor: bgColor, color: color, 
-                        textDecoration: textDecoration, transition: '0.2s',
-                        boxShadow: '2px 2px 5px rgba(0,0,0,0.2)'
-                      }}
-                    >
+                    <button key={ev} onClick={() => toggleEvidence(ev)} style={buttonStyle}>
                       {ev}
                     </button>
                   );
@@ -279,7 +282,7 @@ function App() {
               <h2 className="typed-text" style={{ fontSize: '24px' }}>Possible Entities ({possibleGhosts.length})</h2>
               <div className="ghost-grid" style={{ gridTemplateColumns: '1fr 1fr', fontSize: '22px' }}>
                 {possibleGhosts.map(g => (
-                   <span key={g.id} className="ghost-link" style={{ fontSize: '24px' }} onClick={() => openGhost(g)}>
+                   <span key={g.id} className="ghost-link" style={{ fontSize: '26px' }} onClick={() => openGhost(g)}>
                      {g.name}
                    </span>
                 ))}
@@ -293,42 +296,52 @@ function App() {
               <h1 className="typed-text">Investigation Tools</h1>
               <hr />
               
-              {/* Smudge Timer */}
-              <div style={{ backgroundColor: '#262626', color: '#fff', padding: '20px', borderRadius: '12px', marginBottom: '30px', textAlign: 'center' }}>
-                <h3 style={{ fontFamily: "'Special Elite', monospace", margin: '0 0 10px 0', color: '#ccc' }}>Smudge Timer</h3>
-                <div style={{ fontSize: '48px', fontFamily: "monospace", fontWeight: 'bold', marginBottom: '10px' }}>
-                  {formatTime(smudgeTimer)}
+              {/* Tématický Smudge Timer */}
+              <div style={{ marginBottom: '35px', padding: '20px', border: '2px solid #1c2b42', position: 'relative' }}>
+                
+                {/* Nadpis vložený do horní čáry */}
+                <div style={{ position: 'absolute', top: '-14px', left: '20px', backgroundColor: '#e6dac3', padding: '0 10px', fontFamily: "'Special Elite', monospace", fontSize: '20px', color: '#1c2b42', fontWeight: 'bold' }}>
+                  [ SMUDGE TIMER ]
                 </div>
-                <button 
-                  onClick={startSmudgeTimer}
-                  style={{ padding: '10px 20px', backgroundColor: '#f4d03f', border: 'none', borderRadius: '6px', cursor: 'pointer', fontFamily: "'Special Elite', monospace", fontSize: '18px', color: '#111', marginRight: '10px' }}
-                >
-                  START SMUDGE (180s)
-                </button>
-                <button 
-                  onClick={() => { setTimerActive(false); setSmudgeTimer(0); }}
-                  style={{ padding: '10px 20px', backgroundColor: '#ef4444', border: 'none', borderRadius: '6px', cursor: 'pointer', fontFamily: "'Special Elite', monospace", fontSize: '18px', color: '#fff' }}
-                >
-                  RESET
-                </button>
+                
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '10px' }}>
+                  <div style={{ fontSize: '54px', fontFamily: "'Special Elite', monospace", color: timerActive ? '#8b0000' : '#1c2b42', letterSpacing: '4px', textShadow: '1px 1px 0 rgba(0,0,0,0.1)' }}>
+                    {formatTime(smudgeTimer)}
+                  </div>
+                  
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <button 
+                      onClick={startSmudgeTimer}
+                      style={{ backgroundColor: 'transparent', border: '2px solid #1c2b42', cursor: 'pointer', fontFamily: "'Special Elite', monospace", fontSize: '16px', color: '#1c2b42', padding: '6px 12px', fontWeight: 'bold', boxShadow: '3px 3px 0 rgba(28, 43, 66, 0.4)' }}
+                    >
+                      START (180s)
+                    </button>
+                    <button 
+                      onClick={() => { setTimerActive(false); setSmudgeTimer(0); }}
+                      style={{ backgroundColor: 'transparent', border: '2px dashed #8b0000', cursor: 'pointer', fontFamily: "'Special Elite', monospace", fontSize: '16px', color: '#8b0000', padding: '4px 12px' }}
+                    >
+                      RESET
+                    </button>
+                  </div>
+                </div>
 
-                {/* Milníky Timeru */}
-                <div style={{ marginTop: '15px', fontSize: '14px', textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                  <span style={{ color: smudgeTimer <= 120 && smudgeTimer > 0 ? '#ef4444' : '#888' }}>
-                    🚨 <strong>1:00 (60s)</strong> - Demon can hunt again
-                  </span>
-                  <span style={{ color: smudgeTimer <= 90 && smudgeTimer > 0 ? '#ef4444' : '#888' }}>
-                    🚨 <strong>1:30 (90s)</strong> - Normal ghosts can hunt again
-                  </span>
-                  <span style={{ color: smudgeTimer === 0 && timerActive === false ? '#888' : '#10b981' }}>
-                    ✅ <strong>3:00 (180s)</strong> - Spirit can hunt again
-                  </span>
-                </div>
+                {/* Ručně psané milníky Timeru */}
+                <ul className="handwritten" style={{ marginTop: '20px', fontSize: '28px', paddingLeft: '20px', margin: '15px 0 0 0', color: '#1c2b42' }}>
+                  <li style={{ color: smudgeTimer <= 120 && smudgeTimer > 0 ? '#8b0000' : 'inherit', textDecoration: timerActive && smudgeTimer <= 120 ? 'line-through' : 'none' }}>
+                    60s - Demon can hunt
+                  </li>
+                  <li style={{ color: smudgeTimer <= 90 && smudgeTimer > 0 ? '#8b0000' : 'inherit', textDecoration: timerActive && smudgeTimer <= 90 ? 'line-through' : 'none' }}>
+                    90s - Normal ghosts can hunt
+                  </li>
+                  <li style={{ color: smudgeTimer === 0 && !timerActive ? 'inherit' : '#10b981' }}>
+                    180s - Spirit can hunt
+                  </li>
+                </ul>
               </div>
 
               {/* Smart Tipy */}
               <h2 className="typed-text" style={{ fontSize: '24px' }}>What to check next</h2>
-              <div style={{ padding: '15px', backgroundColor: 'rgba(255,255,255,0.4)', borderRadius: '8px' }}>
+              <div style={{ marginTop: '10px' }}>
                 {possibleGhosts.length === 0 ? (
                   <p className="handwritten" style={{ color: '#8b0000', margin: 0 }}>No ghost matches this evidence. Check your facts, or it's The Mimic!</p>
                 ) : possibleGhosts.length > 6 ? (
