@@ -64,4 +64,10 @@ public class Ghost {
 
     public String getMainTheme() { return mainTheme; }
     public void setMainTheme(String mainTheme) { this.mainTheme = mainTheme; }
+
+    @OneToOne(mappedBy = "ghost")
+    private GhostSpecific specific;
+
+    public GhostSpecific getSpecific() { return specific; }
+    public void setSpecific(GhostSpecific specific) { this.specific = specific; }
 }
