@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react'
 
+interface GhostSpecific {
+  situation: string | null;
+  speed: string | null;
+  huntThreshold: string | null;
+  notesOnBehaviour: string | null;
+}
+
 interface Ghost {
   id: number;
   name: string;
@@ -10,6 +17,7 @@ interface Ghost {
   weakness: string | null;
   shortDescription: string | null;
   mainTheme: string | null;
+  specific: GhostSpecific | null;
 }
 
 function App() {
@@ -18,16 +26,9 @@ function App() {
 
   useEffect(() => {
     fetch('/api/ghosts')
-      .then(response => {
-        if (!response.ok) throw new Error('Síťová odpověď nebyla v pořádku');
-        return response.json();
-      })
+      .then(response => response.json())
       .then(data => {
         setGhosts(data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error("Chyba při stahování dat:", error);
         setLoading(false);
       });
   }, []);
@@ -37,23 +38,13 @@ function App() {
       <h1 style={{ textAlign: 'center', marginBottom: '40px', color: '#fff' }}>👻 Phasmo Journal</h1>
       
       {loading ? (
-        <p style={{ textAlign: 'center' }}>Navazuji spojení s temnotou...</p>
+        <p style={{ textAlign: 'center' }}>Načítám kompletní data...</p>
       ) : (
-        {/* OPRAVENÝ KOMENTÁŘ: Zde začíná GRID (mřížka) */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
-          
           {ghosts.map(ghost => (
-            <div key={ghost.id} style={{ 
-              backgroundColor: '#1a1a1a', 
-              padding: '25px', 
-              borderRadius: '12px', 
-              border: '1px solid #333',
-              boxShadow: '0 4px 6px rgba(0,0,0,0.3)'
-            }}>
+            <div key={ghost.id} style={{ backgroundColor: '#1a1a1a', padding: '25px', borderRadius: '12px', border: '1px solid #333' }}>
               
-              <h2 style={{ marginTop: 0, borderBottom: '1px solid #444', paddingBottom: '10px', color: '#f3f4f6' }}>
-                {ghost.name}
-              </h2>
+              <h2 style={{ marginTop: 0, borderBottom: '1px solid #444', paddingBottom: '10px' }}>{ghost.name}</h2>
               
               <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
                 {ghost.evidence1 && <span style={{ backgroundColor: '#374151', padding: '4px 10px', borderRadius: '6px', fontSize: '0.85rem' }}>{ghost.evidence1}</span>}
@@ -61,21 +52,20 @@ function App() {
                 {ghost.evidence3 && <span style={{ backgroundColor: '#374151', padding: '4px 10px', borderRadius: '6px', fontSize: '0.85rem' }}>{ghost.evidence3}</span>}
               </div>
 
-              {ghost.strength && (
-                <p style={{ fontSize: '0.9rem', lineHeight: '1.4' }}>
-                  <strong style={{ color: '#ef4444' }}>Síla:</strong> {ghost.strength}
-                </p>
-              )}
-              
-              {ghost.weakness && (
-                <p style={{ fontSize: '0.9rem', lineHeight: '1.4' }}>
-                  <strong style={{ color: '#10b981' }}>Slabina:</strong> {ghost.weakness}
-                </p>
+              {ghost.strength && <p style={{ fontSize: '0.9rem' }}><strong style={{ color: '#ef4444' }}>Síla:</strong> {ghost.strength}</p>}
+              {ghost.weakness && <p style={{ fontSize: '0.9rem' }}><strong style={{ color: '#10b981' }}>Slabina:</strong> {ghost.weakness}</p>}
+
+              {/* Sekce pro data z ghost_specific */}
+              {ghost.specific && (
+                <div style={{ marginTop: '15px', padding: '15px', backgroundColor: '#262626', borderRadius: '8px', fontSize: '0.85rem' }}>
+                  <p style={{ margin: '0 0 5px 0' }}><strong>Hunt Threshold:</strong> {ghost.specific.huntThreshold}%</p>
+                  <p style={{ margin: '0 0 5px 0' }}><strong>Rychlost (m/s):</strong> {ghost.specific.speed}</p>
+                  <p style={{ margin: '0', color: '#9ca3af' }}><em>{ghost.specific.notesOnBehaviour}</em></p>
+                </div>
               )}
 
             </div>
           ))}
-
         </div>
       )}
     </div>
